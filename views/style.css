@@ -1,0 +1,18 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+h5 {
+  display: inline-block;
+}
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 15px;
+  justify-content: space-between;
+}
+li {
+  list-style: none;
+  font-size: 12px;
+  width: 8%;
+}

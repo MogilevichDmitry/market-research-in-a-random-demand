@@ -1,0 +1,23 @@
+
+html
+  head
+    style
+      include style.css
+  body
+    div
+      h4 исходные данные
+      div
+        h5 lambda=
+        h5!= lambda
+      div
+        h5 T_n=
+        h5!= T_n
+    div
+      h4 результаты
+      h5 count=
+      h5!= count
+    div sigma=
+      span!= sigma
+    div.list
+      for item in array
+        li #{item}
