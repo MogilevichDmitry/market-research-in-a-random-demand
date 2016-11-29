@@ -16,7 +16,7 @@ app.get('/process', (req, res) => {
    })
 })
 
-app.get('/equillibrium', (req, res) => {
+app.get('/equilibrium', (req, res) => {
   const equilibriumMarket = simulateEquilibriumMarket();
   res.render('result', {
     Q_t: equilibriumMarket.Q_t,
