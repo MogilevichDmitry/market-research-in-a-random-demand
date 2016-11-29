@@ -1,19 +1,29 @@
 import express from 'express';
-import { simulateRandomProcess } from './api';
+import { simulateRandomProcess, simulateEquilibriumMarket } from './api';
 
 const app = express();
 
 app.set('view engine', 'jade');
 
 app.get('/process', (req, res) => {
-  const randomProcess = simulateRandomProcess(1/4, 600);
+  const randomProcess = simulateRandomProcess(1/4, 300);
   res.render('process.jade', {
     lambda: '1/4',
-    T_n: '600',
+    T_n: '300',
     count: randomProcess.count,
     sigma: randomProcess.sigma,
     array: randomProcess.t_array
    })
+})
+
+app.get('/equillibrium', (req, res) => {
+  const equilibriumMarket = simulateEquilibriumMarket();
+  res.render('result', {
+    Q_t: equilibriumMarket.Q_t,
+    q_length: equilibriumMarket.Q_t.length,
+    P_t: equilibriumMarket.P_t,
+    p_length: equilibriumMarket.P_t.length,
+  })
 })
 
 

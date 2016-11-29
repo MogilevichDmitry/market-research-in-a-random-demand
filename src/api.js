@@ -1,42 +1,3 @@
-const gaussian = (mean, stdev) => {
-  let y2;
-  let use_last = false;
-  return function() {
-    let y1;
-
-    if(use_last) {
-      y1 = y2;
-      use_last = false;
-    } else {
-      let x1, x2, w;
-
-      do {
-        x1 = 2.0 * Math.random() - 1.0;
-        x2 = 2.0 * Math.random() - 1.0;
-        w = x1 * x1 + x2 * x2;
-      } while( w >= 1.0);
-
-      w = Math.sqrt((-2.0 * Math.log(w)) / w);
-      y1 = x1 * w;
-      y2 = x2 * w;
-      use_last = true;
-    }
-
-    var retval = mean + stdev * y1;
-    if(retval > 0) {
-      return retval;
-    }
-    return -retval;
-  }
-}
-
-const getGaussian = gaussian(0, 1);
-
-const getRandom = () => {
-  let randomNumber = getGaussian();
-  return randomNumber >= 1 ? getRandom() : randomNumber;
-}
-
 export const simulateRandomProcess = (lambda, T_n ) => {
   let n = 0;
   let t_n;
@@ -46,7 +7,7 @@ export const simulateRandomProcess = (lambda, T_n ) => {
 
   while(flag) {
     n++;
-    r = getRandom();
+    r = Math.random();
     tau = -1.0 / lambda * Math.log(r);
     t_n = t[n - 1] + tau;
     if (t_n > T_n){
@@ -58,4 +19,43 @@ export const simulateRandomProcess = (lambda, T_n ) => {
   t = t.slice(1);
 
   return { t_array: t, count: n - 1, sigma: T_n / n - 1 };
+}
+
+const simulateTradeDeficitMarket = (consts) => {
+
+}
+
+
+export const simulateEquilibriumMarket = (
+  R = 50,
+  Q_m = 4,
+  a = 0.4,
+  T = 300,
+  P_0 = 7,
+  P_1 = 3,
+  P_2 = 0.1,
+  Q_0 = 0,
+  tau = 10,
+  sigma = 0.01
+) => {
+  const P_min = P_1 + P_2;
+  const P_max = Q_m / a;
+  const P_t = [P_0];
+  const Q_t = [0];
+  let ksi_t;
+  let tempP_t, tempQ_t;
+
+  for(let t = 1; t <= 35; t++) {
+    ksi_t = t;
+    tempQ_t = (R * (Q_m + ksi_t - a * P_t[t - 1] ) + a * (Q_m + ksi_t - a * P_1)) / (2 * a + R);
+    tempP_t = (Q_m + ksi_t - tempQ_t) / a;
+    Q_t.push(tempQ_t);
+    P_t.push(tempP_t);
+  }
+
+  return { Q_t: Q_t, P_t: P_t };
+}
+
+const simulateOverstockMarket = (consts) => {
+
 }
