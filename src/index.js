@@ -45,6 +45,18 @@ app.get('/deficit', (req, res) => {
   })
 })
 
+app.get('/overstock', (req, res) => {
+  const overstockMarket = simulateOverstockMarket();
+  overstockMarket.P_t = overstockMarket.P_t.map(number => String(number).replace('.', ','));
+  overstockMarket.Q_t = overstockMarket.Q_t.map(number => String(number).replace('.', ','))
+  res.render('result', {
+    Q_t: overstockMarket.Q_t,
+    q_length: overstockMarket.Q_t.length,
+    P_t: overstockMarket.P_t,
+    p_length: overstockMarket.P_t.length
+  })
+})
+
 
 app.listen(3000, () => {
   console.log('Server is available on http://localhost:3000');
