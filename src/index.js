@@ -6,9 +6,9 @@ const app = express();
 app.set('view engine', 'jade');
 
 app.get('/process', (req, res) => {
-  const randomProcess = simulateRandomProcess(1/4, 300);
+  const randomProcess = simulateRandomProcess(1/2, 300);
   res.render('process.jade', {
-    lambda: '1/4',
+    lambda: '1/2',
     T_n: '300',
     count: randomProcess.count,
     sigma: randomProcess.sigma,

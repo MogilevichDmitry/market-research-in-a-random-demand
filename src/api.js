@@ -21,10 +21,12 @@ export const simulateRandomProcess = (lambda, T_n ) => {
   return { t_array: t, count: n - 1, sigma: T_n / n - 1 };
 }
 
-const simulateTradeDeficitMarket = (consts) => {
+const simulateTradeDeficitMarket = () => {
 
 }
+const simulateOverstockMarket = () => {
 
+}
 
 export const simulateEquilibriumMarket = (
   R = 50,
@@ -42,20 +44,21 @@ export const simulateEquilibriumMarket = (
   const P_max = Q_m / a;
   const P_t = [P_0];
   const Q_t = [0];
-  let ksi_t;
   let tempP_t, tempQ_t;
+  const randomProcess = simulateRandomProcess(1/10, 300);
+  const processAcross = Math.ceil(T / randomProcess.count);
+  let processCount = 0;
 
-  for(let t = 1; t <= 35; t++) {
-    ksi_t = t;
-    tempQ_t = (R * (Q_m + ksi_t - a * P_t[t - 1] ) + a * (Q_m + ksi_t - a * P_1)) / (2 * a + R);
-    tempP_t = (Q_m + ksi_t - tempQ_t) / a;
+  for(let t = 1; t <= T; t++) {
+    if( t % processAcross === 0) {
+      processCount++;
+    }
+    tempQ_t = (R * (Q_m + randomProcess.t_array[processCount] - a * P_t[t - 1] ) + a * (Q_m + randomProcess.t_array[processCount] - a * P_1)) / (2 * a + R);
+    tempP_t = (Q_m + randomProcess.t_array[processCount] + R * P_t[t - 1]) / (2 * a + R);
     Q_t.push(tempQ_t);
     P_t.push(tempP_t);
+    console.log(processCount);
   }
 
   return { Q_t: Q_t, P_t: P_t };
-}
-
-const simulateOverstockMarket = (consts) => {
-
 }
